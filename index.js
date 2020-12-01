@@ -10,7 +10,7 @@ let topMovies = [
     },
     {
         title: 'The Big Lebowski',
-        director: 'Ethan Coen', 'Joel Coen'
+        director: 'Ethan Coen'
     },
     {
         title: 'Anchorman: The Legend of Ron Burgundy',
