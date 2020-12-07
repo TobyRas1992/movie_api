@@ -1,2 +1,122 @@
-<h1>Welcome to my movie API!</h1>
-<p> This web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Documentation</title>
+</head>
+<body>
+    <h1>Welcome to my movie API reference index!</h1>
+    <p> This web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">REQUEST</th>
+            <th scope="col">URL</th>
+            <th scope="col">HTTP METHOD</th>
+            <th scope="col">REQUEST DATA FORMAT</th>
+            <th scope="col">RESPONSE DATA BODY FORMAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Get a list of all the user's favorite movies</th>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all the movies</td>
+          </tr>
+          <tr>
+            <th scope="row">Get data about a single movie by its title</th>
+            <td>/movies/[Title]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about the selected movie, including an ID: { id:9, title: "Citizen Kane", director: {name: "Orson Welles", birth-year: "1915", death-year: "1985", bio: "Lorem Ipsum" }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Get data about the director of a movie by their name</th>
+            <td>/movies/[Name]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about the selected director</td>
+          </tr>
+          <tr>
+            <th scope="row">Get data about a genre (description) by name/title (e.g., "Thriller")</th>
+            <td>/movies/[Genre]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all the movies within the selected genre</td>
+          </tr>
+          <tr>
+            <th scope="row">Add a movie to the database</th>
+            <td>/movies</td>
+            <td>POST</td>
+            <td>A JSON object holding data about the movie to add, structured like: {
+                title: "The Shawshank Redemption", genre. "Drama", director: {name: "Frank Darabont", birth-year: "1959", bio: "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959) is..." }}</td>
+            <td>A JSON object holding data about the movie that was added, including an ID: { id:5, title: "The Shawshank Redemption", director: {name: "Frank Darabont", birth-year: "1959", bio: "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959) is a..." }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Register new user</th>
+            <td>/users</td>
+            <td>POST</td>
+            <td>A JSON object holding data about the user, structured like: { username: "PeterJackson20", e-mail: "madeupemial@gmail.com"}</td>
+            <td>A JSON object holding data about the user that was added, including an ID: { id:2, username: "PeterJackson20", e-mail: "madeupemial@gmail.com"}</td>
+          </tr>
+          <tr>
+            <th scope="row">Update an existing user's user name</th>
+            <td>users/[ID]/[username]</td>
+            <td>PUT</td>
+            <td>None</td>
+            <td>A JSON object holding data about the user that was added, including an ID: { id:2, username: "PeterJackson20", e-mail: "madeupemial@gmail.com"}</td>
+          </tr>
+          <tr>
+            <th scope="row">Add a movie to a user's list of favorite movies</th>
+            <td>/movies/favorites/[ID]</td>
+            <td>PUT</td>
+            <td>None</td>
+            <td>A text message indicating whether the movie was successfully added to the list</td>
+          </tr>
+          <tr>
+            <th scope="row">Deregister an existing user by removing their email</th>
+            <td>/users/[ID]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A text message indicating whether the email was successfully removed from the profile</td>
+          </tr>
+          <tr>
+            <th scope="row">Remove a user by ID</th>
+            <td>/users/[ID]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A text message indicating whether the user was successfully removed</td>
+          </tr>
+          <tr>
+            <th scope="row">Remove a movie by ID</th>
+            <td>/movies[ID]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A text message indicating whether the movie was successfully removed</td>
+          </tr>
+          <tr>
+            <th scope="row">Remove a movie from a user's list of favorites by ID</th>
+            <td>/movies/favorites/[ID]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A text message indicating whether the movie was successfully removed</td>
+          </tr>
+          <tr>
+            <th scope="row">Delete a movie from a user's list of favorite movies</th>
+            <td>/movies/favorites/[ID]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A text message indicating whether the movie was successfully added to the list</td>
+          </tr>
+        </tbody>
+      </table>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
+
