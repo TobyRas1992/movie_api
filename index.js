@@ -39,8 +39,8 @@ let topMovies = [
 
 let users = [
     {
-        id: 1234
-        name: "Mock User"
+        id: 1234,
+        name: "Mock User",
         user_name: "Mock123"
     }
 ];
@@ -74,9 +74,9 @@ app.get('/users/:id', (req, res) =>{
 });
 
 // Gets data about a single director, by his/her name
-app.get('/movies/:name', (req, res) =>{
+app.get('/movies/directors/:name', (req, res) =>{
     res.json(topMovies.find( (director) => 
-        { return director.name === req.params.name}));
+        { return topMovies.director.name === req.params.name}));
 });
 
 // Gets a list of all movies within a genre
@@ -135,7 +135,7 @@ app.delete('/', (req, res) => {
 });
 
 // Update the name of user by, by id
-apps.put('/users/:id/:name', (req, res) => {
+app.put('/users/:id/:name', (req, res) => {
     let user = user.find((user) => { return user.id === req.params.id});
 
     if (user) {
@@ -147,7 +147,7 @@ apps.put('/users/:id/:name', (req, res) => {
 });
 
 // Update the user name of user by, by id
-apps.put('/users/:id/:user_name', (req, res) => {
+app.put('/users/:id/:user_name', (req, res) => {
     let user = user.find((user) => { return user.id === req.params.id});
 
     if (user) {
@@ -159,7 +159,7 @@ apps.put('/users/:id/:user_name', (req, res) => {
 });
 
 // Update the title of a movie, by movie title
-apps.put('/movies/:id/:title', (req, res) => {
+app.put('/movies/:id/:title', (req, res) => {
     let movie = topMovies.find((movie) => { return movie.id === req.params.id});
 
     if (movie) {
