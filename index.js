@@ -73,15 +73,15 @@ app.get('/users/:id', (req, res) =>{
         { return user.id === req.params.id}));
 });
 
-// Gets data about a single director, by his/her name
+// Gets data about a single director, by his/her name -- this doesn't work for some reason??
 app.get('/movies/directors/:name', (req, res) =>{
-    res.json(topMovies.find( (director) => 
+    res.json(topMovies.find( (movie) => 
         { return topMovies.director.name === req.params.name}));
 });
 
 // Gets a list of all movies within a genre
 app.get('/movies/:genre', (req, res) =>{
-    res.json(topMovies.find( (genre) => 
+    res.json(topMovies.find( (movie) => 
         { return movie.genre === req.params.genre}));
 });
 
