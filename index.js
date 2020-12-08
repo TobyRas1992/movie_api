@@ -18,6 +18,7 @@ let topMovies = [
         }
     },
     {
+        id: 44,
         title: 'The Big Lebowski',
         genre: 'Comedy',
         director: {
@@ -67,7 +68,7 @@ app.get('/movies/:title', (req, res) =>{
         { return movie.title === req.params.title}));
 });
 
-// Gets data about a single user, by their ID
+// Gets data about a single user, by their ID -- Doesn't work
 app.get('/users/:id', (req, res) =>{
     res.json(users.find( (user) => 
         { return user.id === req.params.id}));
@@ -79,13 +80,13 @@ app.get('/movies/directors/:name', (req, res) =>{
         { return topMovies.director.name === req.params.name}));
 });
 
-// Gets a list of all movies within a genre
+// Gets a list of all movies within a genre -- Doesn't work
 app.get('/movies/:genre', (req, res) =>{
     res.json(topMovies.find( (movie) => 
         { return movie.genre === req.params.genre}));
 });
 
-//Adds data for a new movie to our list of movies. 
+//Adds data for a new movie to our list of movies -- doesn't work! 
 app.post ('/movies', (req, res) => {
     let newMovie = req.body;
 
@@ -99,7 +100,7 @@ app.post ('/movies', (req, res) => {
     }
 });
 
-//Adds data for a new user to our list of users. 
+//Adds data for a new user to our list of users. -- Doesn't work! 
 app.post ('/users', (req, res) => {
     let newUser = req.body;
 
@@ -115,8 +116,8 @@ app.post ('/users', (req, res) => {
     }
 });
 
-// Deletes a movie from our list by ID
-app.delete('/', (req, res) => {
+// Deletes a movie from our list by ID -- doesn't work!
+app.delete('/movies/:id', (req, res) => {
     let movie = topMovies.find((movie) => { return movie.id === req.params.id});
 
     if (X) {
@@ -125,7 +126,7 @@ app.delete('/', (req, res) => {
     }
 });
 // Deletes a user from our list by ID
-app.delete('/', (req, res) => {
+app.delete('/users/:id', (req, res) => {
     let user = users.find((user) => { return user.id === req.params.id});
 
     if (X) {
