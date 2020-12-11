@@ -7,89 +7,101 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(morgan('common'));
+
 let topMovies = [
     {
-        "id": `55`,
-        "title":`Team America: World Police`,
-        "genre":`Comedy`,
-        "director": {
-            "name": `Tray Parker`,
-            "birth_year": `1969`,
-            "bio": "XXXXX"
+        id: `55`,
+        title:`Team America: World Police`,
+        genre:'Comedy',
+        director: {
+            name: `Tray Parker`,
+            birth_year: `1969`,
+            death_year: "",
+            bio: "XXXXX"
         }
     },
     {
-        "id":`44`,
-        "title":'The Big Lebowski',
-        "genre": 'Comedy',
-        "director": {
-            "name":"Ethan Coen",
-            "birth_year":"1957",
-            "bio":"XXXXXX"
+        id:`44`,
+        title:'The Big Lebowski',
+        genre: 'Comedy',
+        director: {
+            name:"Ethan Coen",
+            birth_year:"1957",
+            death_year: "",
+            bio:"XXXXXX"
         }
     },
     {
-        "id": "66",
-        "title":`Anchorman: The Legend of Ron Burgundy`,
-        "genre":`Comedy`,
-        "director": {
-            "name":`Adam McKay`,
-            "birth_year":`1968`,
-            "bio":`XXXXXX`
+        id: "66",
+        title:`Anchorman: The Legend of Ron Burgundy`,
+        genre:'Comedy',
+        director: {
+            name:`Adam McKay`,
+            birth_year:`1968`,
+            death_year: "",
+            bio:`XXXXXX`
         }
     }
 ];
 
 let users = [
     {
-        "id":"A1234",
-        "name":"Mock User",
-        "username":"Mock123",
-        "email":"mockemail@yahoo.com"
+        id:"A1234",
+        name:"Mock User",
+        username:"Mock123",
+        email:"mockemail@yahoo.com"
     }
 ];
 
-app.use(morgan('common'));
 
-
-app.use(express.static('public'));
 
 
 // Route calls
+app.use(express.static('public'));
+
+// GET REQUESTS 
+
 app.get('/', (req, res) => {
-    res.send('Welcome to a database of my favorite movies!');
+    res.send('Hello there! Welcome to the movie club!');
 });
 
-// Gets a list of data about ALL the movies -- Done!
+// Returns all movies -- Done!
 app.get('/movies', (req, res) => {
     res.json(topMovies);
 });
 
-// Gets the data about a single movie, by its title -- done!
-app.get('/movies/:movieTitle', (req, res) =>{
-    res.json(topMovies.find( (movie) => 
-        { return movie.title === req.params.title}));
+// Returns specific movie object by name -- Done!
+app.get('/movies/:title', (req, res) =>{
+    res.json(topMovies.find( (movie) => { 
+        return movie.title === req.params.title
+    }));
 });
 
-// Gets data about a single user, by their ID
-app.get('/users/:userID', (req, res) =>{
-    res.json(users.find( (user) => 
-        { return user.id === req.params.id}));
+// Returns single user object by ID
+app.get('/users/:id', (req, res) =>{
+    res.json(users.find( (user) => {
+        return user.id === req.params.id
+    }));
 });
 
-// Gets data about a single director, by his/her name -- done!
-app.get('/movies/directors/:nameName', (req, res) =>{
-    res.json(topMovies.find( (movie) => 
-        { return movie.director.name === req.params.name}));
+// Returns specific director object by name -- done!
+app.get('/movies/directors/:name', (req, res) =>{
+    res.json(topMovies.find( (movie) => {
+        return movie.director.name === req.params.name
+    }));
 });
 
-// Gets a list of all movies within a genre -- Done!
+// Returns a list of all movies within a genre
 app.get('/movies/genre/:genre', (req, res) =>{
-    res.json(topMovies.find( (movie) => 
-        { return movie.genre === req.params.genre}));
+    res.json(topMovies.filter( (movie) => {
+        return movie.genre === req.params.genre
+    }));
 });
 
-//Adds data for a new movie to the main list of movies
+// POST REQUESTS 
+
+//Adds new movie to the main list of movies
 app.post ('/movies', (req, res) => {
     let newMovie = req.body;
 
@@ -103,7 +115,7 @@ app.post ('/movies', (req, res) => {
     }
 });
 
-//Adds data for a new user to our list of users. 
+//Adds new user to our list of users. 
 app.post ('/users', (req, res) => {
     let newUser = req.body;
 
@@ -119,8 +131,10 @@ app.post ('/users', (req, res) => {
     }
 });
 
+//DELETE Requests
+
 // Deletes a movie from our list by ID -- Done!
-app.delete('/movies/:movieID', (req, res) => {
+app.delete('/movies/:id', (req, res) => {
     let movie = topMovies.find((movie) => { return movie.id === req.params.id});
 
     if (movie) {
@@ -130,7 +144,7 @@ app.delete('/movies/:movieID', (req, res) => {
 });
 
 // Deletes a user from our list by ID
-app.delete('/users/:userID', (req, res) => {
+app.delete('/users/:id', (req, res) => {
     let user = users.find((user) => { return user.id === req.params.id});
 
     if (user) {
@@ -139,8 +153,10 @@ app.delete('/users/:userID', (req, res) => {
     }
 });
 
-// Update the name of user by, by id
-app.put('/users/:userID/:name', (req, res) => {
+//PUT Requests
+
+// Update the name of user by id
+app.put('/users/:id/:name', (req, res) => {
     let user = users.find((user) => { return user.id === req.params.id});
 
     if (user) {
@@ -151,8 +167,8 @@ app.put('/users/:userID/:name', (req, res) => {
     }
 });
 
-// Update the username of user by, by id
-app.put('/users/:userID/:user_name', (req, res) => {
+// Update the username of user by id
+app.put('/users/:id/:user_name', (req, res) => {
     let user = users.find((user) => { return user.id === req.params.id});
 
     if (user) {
@@ -163,8 +179,8 @@ app.put('/users/:userID/:user_name', (req, res) => {
     }
 });
 
-// Update the title of a movie, by movie title
-app.put('/movies/:movieID/:movieTitle', (req, res) => {
+// Update the title of a movie by title
+app.put('/movies/:id/:title', (req, res) => {
     let movie = topMovies.find((movie) => { return movie.id === req.params.id});
 
     if (movie) {
