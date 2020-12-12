@@ -92,7 +92,7 @@ app.get('/movies/directors/:name', (req, res) =>{
     }));
 });
 
-// Returns a list of all movies within a genre
+// Returns a list of all movies within a genre --Done!
 app.get('/movies/genre/:genre', (req, res) =>{
     res.json(topMovies.filter( (movie) => {
         return movie.genre === req.params.genre
@@ -101,7 +101,7 @@ app.get('/movies/genre/:genre', (req, res) =>{
 
 // POST REQUESTS 
 
-//Adds new movie to the main list of movies
+//Adds new movie to the main list of movies --Done!
 app.post ('/movies', (req, res) => {
     let newMovie = req.body;
 
@@ -115,7 +115,7 @@ app.post ('/movies', (req, res) => {
     }
 });
 
-//Adds new user to our list of users. 
+//Adds new user to our list of users.
 app.post ('/users', (req, res) => {
     let newUser = req.body;
 
