@@ -1,13 +1,22 @@
 const express = require('express'),
 morgan = require('morgan'),
 bodyParser = require('body-parser'),
-uuid= require('uuid'); 
+uuid= require('uuid'),
+mongoose = require('mongoose'),
+Models = require('./models.js'); 
 
-const app = express();
+const app = express(),
+Movies = Models.Movie,
+Users = Models.User; // Models.Movie and Models.User refer to the model names I defined in the models.js file.
+
+mongoose.connect('mongodb://localhost:27017//myFlixDB', { useNewURLParser: true, useUnifiedTopology: true}); // allows Mongoose to connect to my database so that it can perform CRUD operations on the documents it contains from within your REST API. 
 
 app.use(bodyParser.json());
 
 app.use(morgan('common'));
+
+let Movie = mongoose.model('Movie', movieSchema);
+let User = mongoose.model('User', userSchema);
 
 let topMovies = [
     {
@@ -116,20 +125,44 @@ app.post ('/movies', (req, res) => {
 });
 
 //Adds new user to our list of users.
-app.post ('/users', (req, res) => {
-    let newUser = req.body;
-
-    if (!newUser.name) {
-        const message = 'Missing name in request body';
-        res.status(400).send(message);
-    } else if (!newUser.user_name) {
-        const message = 'Missing user name in request body';
-    } else {
-        newUser.id = uuid.v4();
-        users.push(newUser);
-        res.status(201).send(newUser);
-    }
+app.post('/users', (req, res) =>{
+    Users.findOne({ Username: req.body.Username }).then((user) => {
+        if (user) {
+            return res.status(400).send(req.body.Username + 'already exists');
+        } else {
+            Users.create({
+                Username: req.body.Username,
+                Password: req.body.Password,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
+            }).then((user) => {res.status(201).json(user) })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            })
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
+
+//Adds new user to our list of users (old way).
+// app.post ('/users', (req, res) => {
+//     let newUser = req.body;
+
+//     if (!newUser.name) {
+//         const message = 'Missing name in request body';
+//         res.status(400).send(message);
+//     } else if (!newUser.user_name) {
+//         const message = 'Missing user name in request body';
+//     } else {
+//         newUser.id = uuid.v4();
+//         users.push(newUser);
+//         res.status(201).send(newUser);
+//     }
+// });
 
 //DELETE Requests
 
