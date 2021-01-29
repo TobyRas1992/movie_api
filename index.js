@@ -19,10 +19,12 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
 app.use(morgan('common')); // Logs IP addr, time, method, status code
 app.use(bodyParser.json()); // read req.body of HTTP requests
 
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
-
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
 
 let topMovies = [
     {
@@ -230,12 +232,6 @@ app.put('/movies/:id/:title', (req, res) => {
     }
 });
 
-
-// Error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
 
 // listen for requests
 app.listen(8080, () => {
