@@ -2,18 +2,24 @@ const express = require('express'),
 morgan = require('morgan'),
 bodyParser = require('body-parser'),
 uuid= require('uuid'),
-mongoose = require('mongoose'),
-Models = require('./models.js'); 
+mongoose = require('mongoose');
 
-const app = express(),
-Movies = Models.Movie,
-Users = Models.User; // Models.Movie and Models.User refer to the model names I defined in the models.js file.
+const app = express();
 
-mongoose.connect('mongodb://localhost:27017//myFlixDB', { useNewURLParser: true, useUnifiedTopology: true}); // allows Mongoose to connect to my database so that it can perform CRUD operations on the documents it contains from within your REST API. 
+const Models = require("./models.js");
+const Movies = Models.Movie;
+const Users = Models.User;
 
-app.use(bodyParser.json());
+mongoose.connect("mongodb://localhost:27017/myFlixDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
-app.use(morgan('common'));
+//Middleware 
+app.use(morgan('common')); // Logs IP addr, time, method, status code
+app.use(bodyParser.json()); // read req.body of HTTP requests
+
+
 
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);

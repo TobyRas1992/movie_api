@@ -1,4 +1,4 @@
-const { zip } = require('lodash'); //This had added itself automatically - why?
+// const { zip } = require('lodash'); //This had added itself automatically - why?
 const mongoose = require('mongoose');
 
 let movieSchema = mongoose.Schema({
@@ -10,7 +10,9 @@ let movieSchema = mongoose.Schema({
     },
     Director: {
         Name: String,
-        Bio: String
+        Bio: String,
+        Birth: String,
+        Death: String
     },
     Actors: [String],
     ImagePath: String,
@@ -22,11 +24,11 @@ let userSchema = mongoose.Schema({
     Password: {type: String, required: true},
     Email: {type: String, required: true},
     Birthday: Date,
-    FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+    FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie"}]
 });
 
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+let Movie = mongoose.model("Movie", movieSchema);
+let User = mongoose.model("User", userSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;
