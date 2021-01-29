@@ -1,4 +1,4 @@
-const { zip } = require('lodash');
+const { zip } = require('lodash'); //This had added itself automatically - why?
 const mongoose = require('mongoose');
 
 let movieSchema = mongoose.Schema({
