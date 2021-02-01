@@ -3,13 +3,16 @@ morgan = require('morgan'),
 bodyParser = require('body-parser'),
 uuid= require('uuid'),
 mongoose = require('mongoose');
+const { zip } = require('lodash');
 
 const app = express();
 
+// Requires models defined in models.js
 const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
+// Server connection
 mongoose.connect("mongodb://localhost:27017/myFlixDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -80,7 +83,7 @@ app.use(express.static('public'));
 // GET REQUESTS 
 
 app.get('/', (req, res) => {
-    res.send('Hello there! Welcome to the movie club!');
+    res.send('Hello there! Welcome to my movie API!');
 });
 
 // Returns all movies -- Done!
@@ -93,6 +96,30 @@ app.get('/movies/:title', (req, res) =>{
     res.json(topMovies.find( (movie) => { 
         return movie.title === req.params.title
     }));
+});
+
+// Get all users
+app.get('/users', (req, res) => {
+    Users.find()
+        .then((users) => {
+            res.status(201).json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+// Get a user by username
+app.get('/users/:Username', (req,res) => {
+    Users.findOne({ Username: req.params.Username })
+        .then((user) => {
+            res.json(user);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Returns single user object by ID
@@ -156,21 +183,6 @@ app.post('/users', (req, res) =>{
     });
 });
 
-//Adds new user to our list of users (old way).
-// app.post ('/users', (req, res) => {
-//     let newUser = req.body;
-
-//     if (!newUser.name) {
-//         const message = 'Missing name in request body';
-//         res.status(400).send(message);
-//     } else if (!newUser.user_name) {
-//         const message = 'Missing user name in request body';
-//     } else {
-//         newUser.id = uuid.v4();
-//         users.push(newUser);
-//         res.status(201).send(newUser);
-//     }
-// });
 
 //DELETE Requests
 
