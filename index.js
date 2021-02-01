@@ -65,14 +65,7 @@ let topMovies = [
     }
 ];
 
-let users = [
-    {
-        id:"A1234",
-        name:"Mock User",
-        username:"Mock123",
-        email:"mockemail@yahoo.com"
-    }
-];
+let users = [];
 
 
 
