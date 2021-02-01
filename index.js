@@ -79,19 +79,31 @@ app.get('/', (req, res) => {
     res.send('Hello there! Welcome to my movie API!');
 });
 
-// Returns all movies -- Done!
+//Get all movies (updated)
 app.get('/movies', (req, res) => {
-    res.json(topMovies);
+    Movies.find()
+        .then((movies) =>{
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
-// Returns specific movie object by name -- Done!
-app.get('/movies/:title', (req, res) =>{
-    res.json(topMovies.find( (movie) => { 
-        return movie.title === req.params.title
-    }));
+//Get one movie by title (updated)
+app.get('/movies/:Title', (req, res) => {
+    Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
-// Get all users
+// Get all users (updated)
 app.get('/users', (req, res) => {
     Users.find()
         .then((users) => {
@@ -103,8 +115,8 @@ app.get('/users', (req, res) => {
         });
 });
 
-// Get a user by username
-app.get('/users/:Username', (req,res) => {
+// Get a user by username (updated)
+app.get('/users/:Username', (req, res) => {
     Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
@@ -113,13 +125,6 @@ app.get('/users/:Username', (req,res) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
-});
-
-// Returns single user object by ID
-app.get('/users/:id', (req, res) =>{
-    res.json(users.find( (user) => {
-        return user.id === req.params.id
-    }));
 });
 
 // Returns specific director object by name -- done!
@@ -213,17 +218,28 @@ app.put('/users/:id/:name', (req, res) => {
     }
 });
 
-// Update the username of user by id
-app.put('/users/:id/:user_name', (req, res) => {
-    let user = users.find((user) => { return user.id === req.params.id});
-
-    if (user) {
-        user.name[req.params.user_name] = parseInt (req.params.user_name);
-        res.status(201).send('User with ID: ' + req.params.id + ' was assigned the user name of ' + req.params.user_name);
-    } else {
-        res.status(404).send('User with the ID: ' + req.params.id + ' was not found.');
-    }
+// Update the info of user by username (updated)
+app.put('/users/:Username', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username}, { $set:
+        {
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+        }
+    },
+    { new: true }, // This makes sure that the updated documents is returned
+    (err, updatedUser) => {
+        if(err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
 });
+
+
 
 // Update the title of a movie by title
 app.put('/movies/:id/:title', (req, res) => {
