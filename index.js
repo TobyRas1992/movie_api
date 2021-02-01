@@ -239,7 +239,21 @@ app.put('/users/:Username', (req, res) => {
     });
 });
 
-
+// Add a movie to a user's list of favorites
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username}, {
+        $push: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true},
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Errors: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
+});
 
 // Update the title of a movie by title
 app.put('/movies/:id/:title', (req, res) => {
