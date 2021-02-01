@@ -204,6 +204,18 @@ app.delete('/users/:id', (req, res) => {
     }
 });
 
+//Delete a user by username
+app.delete('/users/:Username', (req, res) => {
+    Users.findOneAndRemove({ Username: req.params.Usermame})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.Ussername + ' was not found');
+            } else {
+                res.status(200).send(req.params.Username + 'was deleted.')
+            }
+        })
+})
+
 //PUT Requests
 
 // Update the name of user by id
@@ -239,10 +251,26 @@ app.put('/users/:Username', (req, res) => {
     });
 });
 
-// Add a movie to a user's list of favorites
+// Add a movie to a user's list of favorites (updated)
 app.post('/users/:Username/Movies/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
-        $push: { FavoriteMovies: req.params.MovieID }
+        $addToSet: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true},
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Errors: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
+});
+
+// Remove a movie from a user's list of favorites (updated)
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username}, {
+        $pull: { FavoriteMovies: req.params.MovieID }
     },
     { new: true},
     (err, updatedUser) => {
