@@ -34,13 +34,15 @@ app.use((err, req, res, next) => {
 // Route calls
 app.use(express.static('public'));
 
-// GET REQUESTS 
 
+// QUERIES
+
+// Default text response
 app.get('/', (req, res) => {
     res.send('Hello there! Welcome to my movie API!');
 });
 
-//Get all movies (updated)
+// ALL Movies - get
 app.get('/movies', (req, res) => {
     Movies.find()
         // .populate('Director') //Why isn't this working?
@@ -53,7 +55,7 @@ app.get('/movies', (req, res) => {
         });
 });
 
-//Get one movie by title (updated)
+// One movie - get by title
 app.get('/movies/:Title', (req, res) => {
     Movies.findOne({ Title: req.params.Title })
         .then((movie) => {
@@ -65,9 +67,59 @@ app.get('/movies/:Title', (req, res) => {
         });
 });
 
-// Get all users (updated)
+// Genre info - get from title of movie
+app.get("/movies/genres/:Title", (req, res) => {
+    Movies.findOne({ Title: req.params.Title })
+        .then(movie => {
+            res.json(movie.Genre);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
+
+// All movies within a genre
+app.get('/movies/:Genre', (req, res) => {
+    Movies.find({"Genre.Name": req.params.Genre})
+        .then((movies) => {
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+// Genre info - get by name
+app.get('movies/genre/:Name', (req, res) => {
+    Movies.findOne({"Genre.Name": req.params.Name})
+    .then((genre) => {
+        res.status(201).json(genre);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+
+// Director info - get from name
+app.get('movies/director/:Name', (req, res) =>{
+    Movies.findOne({ "Director.Name": req.params.Name})
+    .then((director) => {
+        res.json(director);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+// All users - get
 app.get('/users', (req, res) => {
     Users.find()
+        .populate('Movie')
         .then((users) => {
             res.status(201).json(users);
         })
@@ -89,41 +141,7 @@ app.get('/users/:Username', (req, res) => {
         });
 });
 
-// Get one director by name (updated)
-app.get('/director/:Name', (req, res) =>{
-    Directors.findOne({ Name: req.params.Name})
-    .then((director) => {
-        res.json(director);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
 
-// Get all movies within a genre (updated)
-app.get('/movies/:Genre', (req, res) => {
-    Movies.find({Genre: req.params.Genre})
-        .then((movies) => {
-            res.status(201).json(movies);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
-
-//Get info about a genre by name (Updated)
-app.get('/genre/:Name', (req, res) => {
-    Genres.findOne({Name: req.params.Name})
-    .then((genre) => {
-        res.status(201).json(genre);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
 
 // POST REQUESTS 
 
@@ -177,27 +195,7 @@ app.post('/users', (req, res) =>{
 
 //DELETE Requests
 
-// Deletes a movie from our list by ID -- Done!
-app.delete('/movies/:id', (req, res) => {
-    let movie = topMovies.find((movie) => { return movie.id === req.params.id});
-
-    if (movie) {
-        topMovies = topMovies.filter((obj) => { return obj.id !== req.params.id });
-        res.status(201).send('Movie with ID: ' + req.params.id + ' was deleted.');
-    }
-});
-
-// Deletes a user from our list by ID
-app.delete('/users/:id', (req, res) => {
-    let user = users.find((user) => { return user.id === req.params.id});
-
-    if (user) {
-        users = users.filter((obj) => { return obj.id !== req.params.id});
-        res.status(201).send('User with ID: ' + req.params.id + ' was deleted.');
-    }
-});
-
-//Delete a user by username (updated)
+//Delete a user by username
 app.delete('/users/:Username', (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username})
         .then((user) => {
@@ -213,7 +211,7 @@ app.delete('/users/:Username', (req, res) => {
         });
 });
 
-// Delete a movie by its title (updated)
+// Delete a movie by its title
 app.delete('/movies/:Title', (req, res) => {
     Movies.findOneAndRemove({ Title: req.params.Title})
     .then((movie) => {
@@ -284,17 +282,6 @@ app.post('/users/:Username/Movies/:MovieID', (req, res) => {
     });
 });
 
-// Update the title of a movie by title
-app.put('/movies/:id/:title', (req, res) => {
-    let movie = topMovies.find((movie) => { return movie.id === req.params.id});
-
-    if (movie) {
-        movie.title[req.params.title] = parseInt (req.params.title);
-        res.status(201).send('Movie with ID: ' + req.params.id + ' was assigned the title of ' + req.params.title);
-    } else {
-        res.status(404).send('Movie with the ID: ' + req.params.id + ' was not found.');
-    }
-});
 
 
 // listen for requests
