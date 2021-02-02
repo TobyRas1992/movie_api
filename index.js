@@ -168,7 +168,7 @@ app.post('/movies', (req, res) =>{
         }
     })
 })
-//Adds new user to userlist (updated)
+//Adds new user to userlist
 app.post('/users', (req, res) =>{
     Users.findOne({ Username: req.body.Username }).then((user) => {
         if (user) {
@@ -229,7 +229,7 @@ app.delete('/movies/:Title', (req, res) => {
 
 //PUT Requests
 
-// Update the info of user by username (updated)
+// Update the info of user by username
 app.put('/users/:Username', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, { $set:
         {
@@ -250,8 +250,8 @@ app.put('/users/:Username', (req, res) => {
     });
 });
 
-// Add a movie to a user's list of favorites (updated)
-app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+// Add a movie to a user's list of favorites
+app.post('/users/:Username/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
         $addToSet: { FavoriteMovies: req.params.MovieID }
     },
@@ -266,8 +266,8 @@ app.post('/users/:Username/Movies/:MovieID', (req, res) => {
     });
 });
 
-// Remove a movie from a user's list of favorites (updated)
-app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+// Remove a movie from a user's list of favorites
+app.delete('/users/:Username/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
         $pull: { FavoriteMovies: req.params.MovieID }
     },

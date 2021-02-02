@@ -21,54 +21,80 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Get a list of all the user's favorite movies</th>
-            <td>/movies</td>
+            <th scope="row">Get data about all movies</th>
+            <td>/movies/</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about all the movies</td>
+            <td>A JSON object holding data about all movies</td>
           </tr>
           <tr>
             <th scope="row">Get data about a single movie by its title</th>
             <td>/movies/[movieTitle]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected movie, including an ID: { "_id": "[random_id_number]", "Title": "Citizen Kane", "Description": "The movies centers on XZY", "Genre": "ObjectId([genre_id_number])", "Director": "ObjectId([director_id_number])", "ImageURL": "picture_path.jpg", "Featured": "true"}</td>
+            <td>A JSON object holding data about the selected movie, including an ID: { "_id": "[random_id_number]", "Title": "Citizen Kane", "Description": "The movies centers on XZY", "Genre": { "Name": "Drama", "Description": "Drama film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles."}, "Director": {
+              "Name:" "Orson Welles", "Bio": "George Orson Welles was an American actor, director, screenwriter and producer who is remembered for his innovative work in radio, theatre and film. He is considered one of the greatest filmmakers of all time.", "Birth": "1915", "Death": "1985"}, "ImageURL": "picture_path.jpg", "Released": "1941", "Featured": "true"}</td>
           </tr>
           <tr>
             <th scope="row">Get data about the director of a movie by their name (e.g., "Judd%20Apatow") </th>
-            <td>/directors/[directorName]</td>
+            <td>/movies/directors/[directorName]</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about the selected director</td>
           </tr>
           <tr>
-            <th scope="row">Get data about a genre (description) by name (e.g., "Thriller")</th>
-            <td>/genres/[genreName]</td>
+            <th scope="row">Get data about a genre by name (e.g., "Thriller")</th>
+            <td>/movies/genres/[genreName]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about all the movies within the selected genre</td>
+            <td>A JSON object holding data about the selected genre</td>
+          </tr>
+          <tr>
+            <th scope="row">Get data about all users</th>
+            <td>/users</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all users</td>
+          </tr>
+          <tr>
+            <th scope="row">Get data about one user by username</th>
+            <td>/users/[UserName]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about the selected user</td>
           </tr>
           <tr>
             <th scope="row">Add a movie to the database</th>
             <td>/movies</td>
             <td>POST</td>
-            <td>A JSON object holding data about the movie to add, structured like: {
-                "Title": "The Shawshank Redemption", "Genre": "ObjectId([id_number])", "Director": "ObjectId([id_number])", "ImageURL": "picture_path.jpg", "Featured": "no"}</td>
-            <td>A JSON object holding data about the movie that was added, including an ID: { _id: [random_id_number], Title: "The Shawshank Redemption", Genre: ObjectId([genre_id_number]), Director: ObjectId([director_id_number]), ImageURL: "picture_path.jpg", Featured: false}</td>
+            <td>A JSON object holding data about the movie to add, structured as follows (note that title and genre values are required): {
+                "Title": "The Shawshank Redemption", "Genre": {
+                  "Name": "Drama",
+                  "Description": "Description": "Drama film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles."
+                }, 
+                "Director": {
+                  "Name": "Frank Darabont",
+                  "Bio": "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959) is a Hungarian-American film director, screenwriter and producer who has been nominated for three Academy Awards and a Golden Globe Award."
+                  "Birth": "1959",
+                  "Death": ""
+                },
+                "Actors": ["Morgan Freeman", "Tim Robbins"], "Released": "1995",
+                "ImageURL": "picture_path.jpg", "Featured": "no"}</td>
+            <td>A JSON object holding data about the movie that was added, including an ID.</td>
           </tr>
           <tr>
             <th scope="row">Register new user</th>
             <td>/users</td>
             <td>POST</td>
-            <td>A JSON object holding data about the user, structured like: {"Name": "Peter Jackson", "User_Name": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
-            <td>A JSON object holding data about the user that was added, including an ID: { _id: "[random_ind], "Name": "Peter Jackson", "User_Name": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
+            <td>A JSON object holding data about the user, structured as follows (Note that values for name, password, and Email are required): {"UserName": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
+            <td>A JSON object holding data about the user that was added.</td>
           </tr>
           <tr>
             <th scope="row">Add a movie to a user's list of favorite movies</th>
-            <td>users/[userID]/[movieTitle]</td>
+            <td>users/[userID]/[movieID]</td>
             <td>PUT</td>
             <td>None</td>
-            <td>A JSON object holding data about the movie that was added to the user's list of favorite movies: { "_id": "[random_id_number]"", "Title": "The Shawshank Redemption", "Genre": ObjectId([genre_id_number]), "Director": ObjectId([director_id_number]), "ImageURL": "picture_path.jpg", "Featured": "true", "Featured_Movies": [ObjectId("1hgh5644566")]}</td>
+            <td>A JSON object holding data about the selected user, including the movie that was added to the user's list of favorite movies</td>
           </tr>
           <tr>
             <th scope="row">Remove a movie from a user's list of favorites by ID</th>
@@ -78,29 +104,22 @@
             <td>A text message indicating whether the movie was successfully removed</td>
           </tr>
           <tr>
-            <th scope="row">Update an existing user's user name</th>
-            <td>users/[UserID]/[UserName]</td>
+            <th scope="row">Update user info by name</th>
+            <td>users/[UserName]/</td>
             <td>PUT</td>
-            <td>None</td>
-            <td>A JSON object holding data about the user that was added, including an ID: { _id: "[random_ind], "Name": "Peter Jackson", "User_Name": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
+            <td> JSON object holding new data about the user, structured as follows (Note that values for name, password, and Email are required): {"UserName": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
+            <td>A JSON object holding new, modified data about the selected user</td>
           </tr>
           <tr>
-            <th scope="row">Deregister an existing user by removing their email (remember to set the Email to "#")</th>
-            <td>/users/[userID]/[userEmail]</td>
-            <td>PUT</td>
-            <td>None</td>
-            <td>A text message indicating whether the email was successfully removed from the profile</td>
-          </tr>
-          <tr>
-            <th scope="row">Remove a user by ID</th>
-            <td>/users/[userID]</td>
+            <th scope="row">Remove a user by name</th>
+            <td>/users/[UserName]</td>
             <td>DELETE</td>
             <td>None</td>
             <td>A text message indicating whether the user was successfully removed</td>
           </tr>
           <tr>
-            <th scope="row">Remove a movie by ID</th>
-            <td>/movies/[movieID]</td>
+            <th scope="row">Remove a movie by name</th>
+            <td>/movies/[MovieName]</td>
             <td>DELETE</td>
             <td>None</td>
             <td>A text message indicating whether the movie was successfully removed</td>
