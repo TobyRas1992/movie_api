@@ -13,6 +13,8 @@ let generateJWTToken = (user) => {
     });
 }
 
+
+// I need Ali to explain this function to me step by step.
 /* Post login */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
@@ -28,7 +30,7 @@ module.exports = (router) => {
                     res.send(error);
                 }
                 let token = generateJWTToken(user.toJSON());
-                return res.json({ user, token });
+                return res.json({ user, token }); //ES6 shorthand for return res.json({user: user, token: token})
             });
         })(req, res);
     });

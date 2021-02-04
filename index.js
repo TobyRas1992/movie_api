@@ -4,6 +4,8 @@ bodyParser = require('body-parser'),
 uuid= require('uuid'),
 mongoose = require('mongoose');
 const { zip } = require('lodash');
+const passport = require('passport');
+require('./passport'); //why set it up like this?
 
 const app = express();
 
@@ -11,9 +13,6 @@ const app = express();
 const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
-const Actors = Models.Actor;
 
 // Server connection
 mongoose.connect("mongodb://localhost:27017/myFlixDB", {
@@ -24,6 +23,7 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
 //Middleware 
 app.use(morgan('common')); // Logs IP addr, time, method, status code
 app.use(bodyParser.json()); // read req.body of HTTP requests
+let auth = require('./auth')(app); //Handles HTTP authentication + JWT -> (app) ensures that Express is available in the file as well. 
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 
 // ALL Movies - get
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
         .then((movies) =>{
             res.status(201).json(movies);
