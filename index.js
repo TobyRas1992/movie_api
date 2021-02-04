@@ -45,7 +45,6 @@ app.get('/', (req, res) => {
 // ALL Movies - get
 app.get('/movies', (req, res) => {
     Movies.find()
-        // .populate('Director') //Why isn't this working?
         .then((movies) =>{
             res.status(201).json(movies);
         })
@@ -119,7 +118,7 @@ app.get('movies/director/:Name', (req, res) =>{
 // All users - get
 app.get('/users', (req, res) => {
     Users.find()
-        .populate('Movie')
+        .populate('FavoriteMovies')
         .then((users) => {
             res.status(201).json(users);
         })
@@ -198,6 +197,22 @@ app.post('/users', (req, res) =>{
 //Delete a user by username
 app.delete('/users/:Username', (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.Username + ' was not found');
+            } else {
+                res.status(200).send(req.params.Username + 'was deleted.');
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+//Delete a user by id
+app.delete('/users/:_id', (req, res) => {
+    Users.findOneAndRemove({ _id: req.params._id})
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.Username + ' was not found');
