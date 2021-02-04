@@ -1,11 +1,8 @@
 const express = require('express'),
 morgan = require('morgan'),
 bodyParser = require('body-parser'),
-uuid= require('uuid'),
 mongoose = require('mongoose');
-const { zip } = require('lodash');
-const passport = require('passport');
-require('./passport'); //why set it up like this?
+
 
 const app = express();
 
@@ -24,6 +21,9 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
 app.use(morgan('common')); // Logs IP addr, time, method, status code
 app.use(bodyParser.json()); // read req.body of HTTP requests
 let auth = require('./auth')(app); //Handles HTTP authentication + JWT -> (app) ensures that Express is available in the file as well. 
+
+const passport = require('passport');
+require('./passport'); //why set it up like this?
 
 // Error handling
 app.use((err, req, res, next) => {

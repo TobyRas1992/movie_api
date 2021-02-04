@@ -11,7 +11,7 @@ let generateJWTToken = (user) => {
         expiresIn: '7d', //specifies token expiration
         algorithm: 'HS256' //specifies algorithm used to encode the values of the JWT
     });
-}
+};
 
 
 // I need Ali to explain this function to me step by step.
