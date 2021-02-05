@@ -3,7 +3,6 @@ morgan = require('morgan'),
 bodyParser = require('body-parser'),
 mongoose = require('mongoose');
 
-
 const app = express();
 
 // Requires models defined in models.js
@@ -195,7 +194,7 @@ app.post('/users', (req, res) =>{
 //DELETE Requests
 
 //Delete a user by username
-app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.delete('/users/:Username', passport.authenticate("jwt", { session: false }), passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username})
         .then((user) => {
             if (!user) {
@@ -211,7 +210,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 });
 
 //Delete a user by id
-app.delete('/users/:_id', (req, res) => {
+app.delete('/users/:_id', passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndRemove({ _id: req.params._id})
         .then((user) => {
             if (!user) {
@@ -227,7 +226,7 @@ app.delete('/users/:_id', (req, res) => {
 });
 
 // Delete a movie by its title
-app.delete('/movies/:Title', (req, res) => {
+app.delete('/movies/:Title', passport.authenticate("jwt", { session: false }), (req, res) => {
     Movies.findOneAndRemove({ Title: req.params.Title})
     .then((movie) => {
         if (!movie) {
@@ -245,7 +244,7 @@ app.delete('/movies/:Title', (req, res) => {
 //PUT Requests
 
 // Update the info of user by username
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, { $set:
         {
             Username: req.body.Username,
@@ -266,7 +265,7 @@ app.put('/users/:Username', (req, res) => {
 });
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/:MovieID', (req, res) => {
+app.post('/users/:Username/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
         $addToSet: { FavoriteMovies: req.params.MovieID }
     },
@@ -282,7 +281,7 @@ app.post('/users/:Username/:MovieID', (req, res) => {
 });
 
 // Remove a movie from a user's list of favorites
-app.delete('/users/:Username/:MovieID', (req, res) => {
+app.delete('/users/:Username/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
         $pull: { FavoriteMovies: req.params.MovieID }
     },
