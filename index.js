@@ -1,9 +1,27 @@
 const express = require('express'),
 morgan = require('morgan'),
 bodyParser = require('body-parser'),
-mongoose = require('mongoose');
+mongoose = require('mongoose'),
+cors = require('cors');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; // specifies allowed websites for CORS.
+
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) {
+            return callback(null, true);
+        }
+        if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
+            let message = "The CORS policy for this application does not allow access from this origin " + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 // Requires models defined in models.js
 const Models = require("./models.js");
@@ -154,6 +172,7 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
                 Title: req.body.Title,
                 Description: req.body.Description,
                 Genre: req.body.Genre,
+                Director: req.body.Director,
                 Actors: req.body.Actors,
                 ImagePath: req.body.ImagePath,
                 Featured: req.body.Featured
@@ -167,14 +186,25 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
     })
 })
 //Adds new user to userlist
-app.post('/users', (req, res) =>{
+app.post('/users', // Validation logic
+[check('Username', 'Username is required').isLength({min: 5}), //minimum value of 5 characters are only allowed
+check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Password', 'Password is required.').not().isEmpty(), // chaining .not().isEmpty() simply means "it is not allowed to be empty"
+check('Email', 'Email does not appear to be valid').isEmail()], (req, res) =>{
+
+    // check the validation object for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array()});
+    }
+    let hashedPassword = Users.hashedPassword(rea.body.Password);
     Users.findOne({ Username: req.body.Username }).then((user) => {
         if (user) {
             return res.status(400).send(req.body.Username + 'already exists');
         } else {
             Users.create({
                 Username: req.body.Username,
-                Password: req.body.Password,
+                Password: hashedPassword,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             }).then((user) => {res.status(201).json(user) })
