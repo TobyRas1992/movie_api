@@ -162,7 +162,12 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 // POST REQUESTS 
 
 //Adds new movie to to main movie list (updated)
-app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res) =>{
+app.post('/movies', passport.authenticate('jwt', { session: false }), [check('Title', 'Title is required.').not().isEmpty(), check('Description', 'Description is required').not().isEmpty(), check('Actors', 'Actors need to be in an array.').isArray(), check('ImagePath', 'Correct image path required').isLength({min: 5}), check('Featured', 'Boolean value required.').isBoolean(), check('Released', 'Release year required').isLength({min: 4})], (req, res) =>{
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array()});
+    }
+
     Movies.findOne({Title: req.body.Title})
     .then((movie) =>{
         if (movie) {
@@ -175,7 +180,8 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
                 Director: req.body.Director,
                 Actors: req.body.Actors,
                 ImagePath: req.body.ImagePath,
-                Featured: req.body.Featured
+                Featured: req.body.Featured,
+                Released: req.body.Released
             })
             .then((movie) => {res.status(201).json(movie)})
             .catch((error) => {
@@ -274,11 +280,19 @@ app.delete('/movies/:Title', passport.authenticate("jwt", { session: false }), (
 //PUT Requests
 
 // Update the info of user by username
-app.put('/users/:Username', passport.authenticate("jwt", { session: false }), (req, res) => {
+app.put('/users/:Username', passport.authenticate("jwt", { session: false }),[check('Username', 'Username is required').isLength({min: 5}),
+check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Password', 'Password is required.').not().isEmpty(),
+check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array()});
+    }
+    let hashedPassword = Users.hashPassword(req.Password);
     Users.findOneAndUpdate({ Username: req.params.Username}, { $set:
         {
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
         }
