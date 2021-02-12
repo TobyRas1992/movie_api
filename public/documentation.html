@@ -25,104 +25,159 @@
             <td>/movies/</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about all movies</td>
+            <td>A JSON object containing data about all movies</td>
           </tr>
           <tr>
             <th scope="row">Get data about a single movie by its title</th>
             <td>/movies/[movieTitle]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected movie, including an ID: { "_id": "[random_id_number]", "Title": "Citizen Kane", "Description": "The movies centers on XZY", "Genre": { "Name": "Drama", "Description": "Drama film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles."}, "Director": {
-              "Name:" "Orson Welles", "Bio": "George Orson Welles was an American actor, director, screenwriter and producer who is remembered for his innovative work in radio, theatre and film. He is considered one of the greatest filmmakers of all time.", "Birth": "1915", "Death": "1985"}, "ImageURL": "picture_path.jpg", "Released": "1941", "Featured": "true"}</td>
+            <td>A JSON object containing data about the selected movie, including an ID: <br>
+              { <br>
+                "Genre": { <br>
+                    "Name": "Action", <br>
+                    "Description": "Action film is a film genre in which the protagonist or protagonists are thrust into a series of events that typically include violence, extended fighting, physical feats, rescues and frantic chases." <br>
+                }, <br>
+                "Director": { <br>
+                    "Name": "Chad Stahelski", <br>
+                    "Birth": "1968", <br>
+                    "Bio": "Chad Stahelski is an American stuntman and film director.", <br>
+                    "Birth": "1968", <br>
+                    "Death": Null <br>
+                }, <br>
+                "Actors": [ <br>
+                    "Keau Reeves", <br>
+                    "Halle Barry", <br>
+                    "Laurence Fishburne" <br>
+                ], <br>
+                "_id": "60250e5ab326aa3a973b5ca2", <br>
+                "Title": "John Wick: Chapter 3 - Parabellum", <br>
+                "Description": "John Wick is on the run after killing a member of the international assassin guild, and with a $14 million price tag on his head, he is the target of hit men and women everywhere.", <br>
+                "ImagePath": "https://en.wikipedia.org/wiki/John_Wick:_Chapter_3_%E2%80%93_Parabellum#/media/File:John_Wick_Chapter_3_Parabellum.png", <br>
+                "Featured": true, <br>
+                "Released": "2019", <br>
+                "__v": 0 <br>
+            }</td>
           </tr>
           <tr>
             <th scope="row">Get data about the director of a movie by their name (e.g., "Judd%20Apatow") </th>
             <td>/movies/directors/[directorName]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected director</td>
+            <td>A JSON object containing data about the selected director: <br>
+              "Director": { <br>
+                "Name": "Judd Apatow", <br>
+                "Birth": "1968", <br>
+                "Bio": "Judd Apatow is an American film director, producer, screenwriter, and comedian.", <br>
+                "Birth": "1967", <br>
+                "Death": Null <br>
+            }</td>
           </tr>
           <tr>
             <th scope="row">Get data about a genre by name (e.g., "Thriller")</th>
             <td>/movies/genres/[genreName]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected genre</td>
-          </tr>
-          <tr>
-            <th scope="row">Get data about all users</th>
-            <td>/users</td>
-            <td>GET</td>
-            <td>None</td>
-            <td>A JSON object holding data about all users</td>
+            <td>A JSON object containing data about the selected genre: <br>
+              "Genre": { <br>
+                "Name": "Thriller", <br>
+                "Description": "Thriller is a genre of fiction, having numerous, often overlapping subgenres. Thrillers are characterized and defined by the moods they elicit, giving viewers heightened feelings of suspense, excitement, surprise, anticipation and anxiety." <br>
+            }</td>
           </tr>
           <tr>
             <th scope="row">Get data about one user by username</th>
             <td>/users/[UserName]</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected user</td>
+            <td>A JSON object containing data about the selected user</td>
           </tr>
           <tr>
             <th scope="row">Add a movie to the database</th>
             <td>/movies</td>
             <td>POST</td>
-            <td>A JSON object holding data about the movie to add, structured as follows (note that title and genre values are required): {
-                "Title": "The Shawshank Redemption", "Genre": {
-                  "Name": "Drama",
-                  "Description": "Description": "Drama film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles."
-                }, 
-                "Director": {
-                  "Name": "Frank Darabont",
-                  "Bio": "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959) is a Hungarian-American film director, screenwriter and producer who has been nominated for three Academy Awards and a Golden Globe Award."
-                  "Birth": "1959",
+            <td>A JSON object containing data about the movie to add, structured as follows (note that title and genre values are required): <br> { <br>
+                "Title": "The Shawshank Redemption", <br>"Genre": { <br>
+                  "Name": "Drama", <br>
+                  "Description": "Description": "Drama film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles." <br>
+                }, <br>
+                "Director": { <br>
+                  "Name": "Frank Darabont", <br>
+                  "Bio": "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959) is a Hungarian-American film director, screenwriter and producer who has been nominated for three Academy Awards and a Golden Globe Award.", <br>
+                  "Birth": "1959", <br>
                   "Death": ""
-                },
-                "Actors": ["Morgan Freeman", "Tim Robbins"], "Released": "1995",
-                "ImageURL": "picture_path.jpg", "Featured": "no"}</td>
+                }, <br>
+                "Actors": ["Morgan Freeman", "Tim Robbins"], "Released": "1995", <br>
+                "ImageURL": "picture_path.jpg", <br> "Featured": "no" <br> }</td>
             <td>A JSON object holding data about the movie that was added, including an ID.</td>
           </tr>
           <tr>
             <th scope="row">Register new user</th>
             <td>/users</td>
             <td>POST</td>
-            <td>A JSON object holding data about the user, structured as follows (Note that values for name, password, and Email are required): {"Username": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
-            <td>A JSON object holding data about the user that was added.</td>
+            <td>A JSON object containing data about the user, structured as follows (Note that values for name, password, and email are required, and the value for birthday must be in the form of YYYY-MM-DD): <br> { <br> "Username": "PeterJackson20", <br> "Password": "randompassword", <br> "Email": "madeupemial@gmail.com", <br> "Birthday": "1992-01-27" <br> }</td>
+            <td>A JSON object holding data about the user that was added: <br>
+            { <br>
+              "FavoriteMovies": [], <br>
+              "_id": "602514c7d1f5483bde809734", <br>
+              "Username": "Peter809", <br>
+              "Password": "$2b$10$OkYjzzmT4OEYQl9PO4fMfuLIzUo1ejPVAPk/McQ7Milb73SZiwUUy", <br>
+              "Email": "peter@emial.com", <br>
+              "__v": 0, <br>
+              "Birthday": "1992-01-27" <br>
+            }</td>
           </tr>
           <tr>
             <th scope="row">Add a movie to a user's list of favorite movies</th>
             <td>users/[userID]/[movieID]</td>
             <td>PUT</td>
             <td>None</td>
-            <td>A JSON object holding data about the selected user, including the movie that was added to the user's list of favorite movies</td>
+            <td>A JSON object containing data about the selected user, also showing the user's lit of favorite movies: <br> 
+              { <br>
+                "FavoriteMovies": [{ <br>
+                  "Genre": "6009db6baa81e8ae3369f693", <br>
+                  "Director": "600a8dbd352c18257595b192", <br>
+                  "Actors": ["Steve Carell", "Paul Rudd", "Seth Rogen", "Catherine Keener"], <br>
+                  "_id": "600a959e352c18257595b199", <br>
+                  "Title": "The 40-Year-Old Virgin", <br>
+                  "Description": "The 40-Year-Old Virgin is a 2005 American sex comedy film directed by Judd Apatow in his directorial debut. The film stars Steve Carell (who co-wrote the film's screenplay with Apatow) as the titular 40-year-old virgin Andy, a clerk at an electronic goods store, whose colleagues resolve to help him lose his virginity.", <br>
+                  "ImageURL": "T40YV.jpg", <br>
+                  "Featured": true <br>
+                }], <br>
+                "_id:" "adiahdoaihr121441", <br>
+                "Username": "Peter_Parker", <br>
+                "Password": "$2b$10$OkYjzzmT4OEYQl9PO4fMfuLIzUo1ejPVAPk/McQ7Milb73SZiwUUy", <br>
+                "Email": "webcrawler@email.com", <br>
+                "Birthday": "1992-01-27" <br>
+              }</td>
           </tr>
           <tr>
             <th scope="row">Remove a movie from a user's list of favorites by ID</th>
             <td>/users/[userID]/[movieID]</td>
             <td>PUT</td>
             <td>None</td>
-            <td>A text message indicating whether the movie was successfully removed</td>
+            <td>A JSON object containing data about the selected user, also showing the user's lit of favorite movies: <br> 
+            { <br>
+              "FavoriteMovies": [], <br>
+              "_id:" "adiahdoaihr121441", <br>
+              "Username": "Peter_Parker", <br>
+              "Password": "$2b$10$OkYjzzmT4OEYQl9PO4fMfuLIzUo1ejPVAPk/McQ7Milb73SZiwUUy", <br>
+              "Email": "webcrawler@email.com", <br>
+              "Birthday": "1992-01-27" <br>
+            }</td>
           </tr>
           <tr>
             <th scope="row">Update user info by name</th>
             <td>users/[UserName]/</td>
             <td>PUT</td>
-            <td> JSON object holding new data about the user, structured as follows (Note that values for name, password, and Email are required): {"UserName": "PeterJackson20", "Password": "randompassword", "Email": "madeupemial@gmail.com"}</td>
+            <td> JSON object containing new data about the user, structured as follows (Note that values for name, password, and Email are required): <br> { <br> "UserName": "PeterJackson20", <br> "Password": "randompassword", <br> "Email": "madeupemial@gmail.com" <br> }</td>
             <td>A JSON object holding new, modified data about the selected user</td>
           </tr>
           <tr>
-            <th scope="row">Remove a user by name</th>
+            <th scope="row">Deregister a user by name</th>
             <td>/users/[UserName]</td>
             <td>DELETE</td>
             <td>None</td>
             <td>A text message indicating whether the user was successfully removed</td>
-          </tr>
-          <tr>
-            <th scope="row">Remove a movie by name</th>
-            <td>/movies/[MovieName]</td>
-            <td>DELETE</td>
-            <td>None</td>
-            <td>A text message indicating whether the movie was successfully removed</td>
           </tr>
         </tbody>
       </table>
