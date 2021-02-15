@@ -100,31 +100,6 @@ app.get("/movies/genres/:Title", passport.authenticate('jwt', { session: false }
         });
 });
 
-// All movies within a genre
-app.get('/movies/:Genre', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Movies.find({"Genre.Name": req.params.Genre})
-        .then((movies) => {
-            res.status(201).json(movies);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
-
-// Genre info - get by name
-app.get('movies/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Movies.findOne({"Genre.Name": req.params.Name})
-    .then((genre) => {
-        res.status(201).json(genre);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
-
-
 // Director info - get from name
 app.get('movies/director/:Name', passport.authenticate('jwt', { session: false }), (req, res) =>{
     Movies.findOne({ "Director.Name": req.params.Name})
@@ -150,7 +125,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
         });
 });
 
-// Get a user by username (updated)
+// Get a user by username
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOne({ Username: req.params.Username })
         .then((user) => {
@@ -251,7 +226,7 @@ app.delete('/users/:Username', passport.authenticate("jwt", { session: false }),
 });
 
 //Delete a user by id
-app.delete('/users/:_id', passport.authenticate("jwt", { session: false }), (req, res) => {
+app.delete('/users/byId/:_id', passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndRemove({ _id: req.params._id})
         .then((user) => {
             if (!user) {
