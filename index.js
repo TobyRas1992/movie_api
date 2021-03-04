@@ -240,9 +240,9 @@ app.delete('/users/byId/:_id', passport.authenticate("jwt", { session: false }),
             res.status(500).send('Error: ' + err);
         });
 });
-
+//passport.authenticate("jwt", { session: false }),
 // Delete a movie by its title
-app.delete('/movies/:Title', passport.authenticate("jwt", { session: false }), (req, res) => {
+app.delete('/movies/:Title',  (req, res) => {
     Movies.findOneAndRemove({ Title: req.params.Title})
     .then((movie) => {
         if (!movie) {
