@@ -172,7 +172,7 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), [check('Ti
     })
 })
 //Adds new user to userlist
-app.post('/users', // Validation logic
+app.post('/users',
 [check('Username', 'Username is required').isLength({min: 5}), //minimum value of 5 characters are only allowed
 check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
 check('Password', 'Password is required.').not().isEmpty(), // chaining .not().isEmpty() simply means "it is not allowed to be empty"
