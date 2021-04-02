@@ -14,7 +14,9 @@ let generateJWTToken = (user) => {
 };
 
 
-// I need Ali to explain this function to me step by step.
+// creates new endpoint for registered users to log in. 
+// authenticates login requests with basic HTTP authentication and generates a JWT token. 
+// this code first uses LocalStrategy from passport.js to check that username and password in the request body exist in the database. If they do, you use the generateJWTToken(); function to create a JWT based on the username and password, which you then send back as a response to the client. If the username and password don’t exist, you return the error message you receive fromLocalStrategy back to the client.
 /* Post login */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
