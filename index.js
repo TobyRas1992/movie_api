@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
 });
 
 // ALL Movies - get
-app.get('/movies', /* passport.authenticate('jwt', { session: false }), */ (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
         .then((movies) =>{
             res.status(201).json(movies);
@@ -142,7 +142,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 // POST REQUESTS 
 
 //Adds new movie to to main movie list (updated)
-app.post('/movies', /* passport.authenticate('jwt', { session: false }), */ [check('Title', 'Title is required.').not().isEmpty(), check('Description', 'Description is required').not().isEmpty(), check('Actors', 'Actors need to be in an array.').isArray(), check('ImagePath', 'Correct image path required').isLength({min: 5}), check('Featured', 'Boolean value required.').isBoolean(), check('Released', 'Release year required').isLength({min: 4})], (req, res) =>{
+app.post('/movies', passport.authenticate('jwt', { session: false }), [check('Title', 'Title is required.').not().isEmpty(), check('Description', 'Description is required').not().isEmpty(), check('Actors', 'Actors need to be in an array.').isArray(), check('ImagePath', 'Correct image path required').isLength({min: 5}), check('Featured', 'Boolean value required.').isBoolean(), check('Released', 'Release year required').isLength({min: 4})], (req, res) =>{
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array()});
@@ -242,7 +242,7 @@ app.delete('/users/byId/:_id', passport.authenticate("jwt", { session: false }),
 });
 //
 // Delete a movie by its title
-app.delete('/movies/:Title', /* passport.authenticate("jwt", { session: false }), */ (req, res) => {
+app.delete('/movies/:Title', passport.authenticate("jwt", { session: false }), (req, res) => {
     Movies.findOneAndRemove({ Title: req.params.Title})
     .then((movie) => {
         if (!movie) {
