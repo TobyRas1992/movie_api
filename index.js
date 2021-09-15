@@ -7,10 +7,10 @@ const { check, validationResult } = require('express-validator');
 
 const app = express();
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'http://localhost:4200', 'https://myflix-tobias-cf.netlify.app', 'https://tobyras1992.github.io/myFlix-Angular-client/']; // specifies allowed websites for CORS.
+/* let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'http://localhost:4200', 'https://myflix-tobias-cf.netlify.app', 'https://tobyras1992.github.io/myFlix-Angular-client/']; // specifies allowed websites for CORS. */
 
 
-app.use(cors({
+/* app.use(cors({
     origin: (origin, callback) => {
         if (!origin) {
             return callback(null, true);
@@ -21,7 +21,9 @@ app.use(cors({
         }
         return callback(null, true);
     }
-}));
+})); */
+
+app.use(cors());
 
 // Requires models defined in models.js
 const Models = require("./models.js");
